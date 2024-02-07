@@ -59,27 +59,30 @@ def main(params):
     engine = create_engine(f'postgresql://{user}:{password}@{host}:{port}/{db_name}')
 
     df_games = pd.read_csv(csv_games)
-    df_games[["date"]] = df_games[["date"]].apply(pd.to_datetime)
+    df_games[["date"]] = df_games[["date"]].apply(pd.to_datetime.dt.date)
     df_games.head(n=0).to_sql(name = table_games, con = engine, if_exists = 'replace')
     df_games.to_sql(name = table_games, con = engine, if_exists = 'append')
     print('Games table inserted.') 
 
     df_players = pd.read_csv(csv_players)
-    df_players[["first_game", "last_game"]] = df_players[["first_game", "last_game"]].apply(pd.to_datetime)
+    df_players[["first_game", "last_game"]] = df_players[["first_game", "last_game"]].apply(pd.to_datetime.dt.date)
     df_players.head(n=0).to_sql(name = table_players, con = engine, if_exists = 'replace')
     df_players.to_sql(name = table_players, con = engine, if_exists = 'append')
     print('Players table inserted.') 
 
     series_list = [csv_series_1, csv_series_2, csv_series_3, csv_series_4]
     df_series = pd.read_csv(csv_series_1)
-    df_series[["date"]] = df_series[["date"]].apply(pd.to_datetime)
+    df_series[["date"]] = df_series[["date"]].apply(pd.to_datetime.dt.date)
     df_series.head(n=0).to_sql(name = table_series, con = engine, if_exists = 'replace')
     series_n = 1
     for i in series_list:
+        print('Reading file %.d' % (series_n))
         df_series = pd.read_csv(i)
-        df_series[["date"]] = df_series[["date"]].apply(pd.to_datetime)
+        df_series[["date"]] = df_series[["date"]].apply(pd.to_datetime.dt.date)
         df_series.to_sql(name = table_series, con = engine, if_exists = 'append')
         print('Series %.d inserted' % (series_n))
+        series_n += 1
+
     print('Series table fully inserted.')    
 
 if __name__ == '__main__':
