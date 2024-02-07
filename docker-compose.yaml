@@ -1,0 +1,27 @@
+services:
+  pgdatabase:
+    image: postgres:13
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DBNAME}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - "../db_starcraft_postgres_data:/var/lib/postgresql/data:rw"
+    ports:
+      - "${POSTGRES_PORT}:5432"
+  pgadmin:
+    image: dpage/pgadmin4
+    env_file:
+      - .env    
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - "../pgadmin_data:/var/lib/pgadmin:rw"
+    ports:
+      - "${PGADMIN_PORT}:80"
+
+volumes:
+  pgadmin_data:

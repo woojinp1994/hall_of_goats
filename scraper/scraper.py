@@ -77,4 +77,4 @@ if pagecount != pagetotal:
 else:
     print(f"Success: All {pagecount} of {pagetotal} pages has been loaded to the dataframe.")
 
-df.to_csv('../data/games.csv', index=false)
+df.to_csv('../data/games.csv', index=False)
